@@ -1,2 +1,2 @@
-Patient Name,Patient ID,Modality,Study Date,Manufacturer
-CompressedSamples^CT1,1CT1,CT,20040119,GE MEDICAL SYSTEMS
+Patient Name,Patient ID,Modality,Study Date,Manufacturer,Institution Name,Study Description,Series Description,Body Part Examined,Rows,Columns
+CompressedSamples^CT1,1CT1,CT,20040119,GE MEDICAL SYSTEMS,JFK IMAGING CENTER,e+1,Not Available,Not Available,128,128
