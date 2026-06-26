@@ -2,7 +2,6 @@ import pandas as pd
 from pathlib import Path
 import pydicom
 
-
 def extract_metadata(dataset):
     """
     Extract important metadata fields from a DICOM dataset.
@@ -17,48 +16,72 @@ def extract_metadata(dataset):
     }
     return metadata
 
-# Path to input folder
-input_folder = Path("input")
+def main():
+    # Path to input folder
+    input_folder = Path("input")
 
-# Store metadata of all DICOM files
-all_metadata = []
+    # Store metadata of all DICOM files
+    all_metadata = []
 
-# Process every DICOM file
-for dicom_file in input_folder.glob("*.dcm"):
+    # Process every DICOM file
+    successful_files = 0
+    failed_files = 0
 
-    print(f"Reading: {dicom_file.name}")
+    for dicom_file in input_folder.glob("*.dcm"):
 
-    dataset = pydicom.dcmread(dicom_file)
+        print(f"Reading: {dicom_file.name}")
 
-    metadata = extract_metadata(dataset)
+        try:
+            dataset = pydicom.dcmread(dicom_file)
 
-    all_metadata.append(metadata)
+            metadata = extract_metadata(dataset)
 
-print("\nAll Metadata:")
+            all_metadata.append(metadata)
 
-for metadata in all_metadata:
-    print(metadata)
+            successful_files += 1
 
-print("\nCreating DataFrame...")
+        except Exception as error:
 
-df = pd.DataFrame(all_metadata)
+            print(f"Error reading {dicom_file.name}: {error}")
 
-print(df)
+            failed_files += 1
 
-# Create output folder if it doesn't exist
-output_folder = Path("output")
-output_folder.mkdir(exist_ok=True)
+    print("\nProcessing Summary")
+    print("------------------")
+    print(f"Successful files : {successful_files}")
+    print(f"Failed files     : {failed_files}")
 
-# Export to CSV
-csv_file = output_folder / "dicom_metadata.csv"
+    if not all_metadata:
+        print("\nNo valid DICOM metadata found.")
+        return
 
-df.to_csv(csv_file, index=False)
+    print("\nAll Metadata:")
+    print("------------")
 
-print(f"\nCSV file saved to: {csv_file}")
+    for metadata in all_metadata:
+        print(metadata)
 
-# Export to Excel
-excel_file = output_folder / "dicom_metadata.xlsx"
+    print("\nCreating DataFrame...")
 
-df.to_excel(excel_file, index=False)
+    df = pd.DataFrame(all_metadata)
 
-print(f"Excel file saved to: {excel_file}")
+    print(df)
+
+    # Create output folder if it doesn't exist
+    output_folder = Path("output")
+    output_folder.mkdir(exist_ok=True)
+
+    # Export to CSV
+    csv_file = output_folder / "dicom_metadata.csv"
+    df.to_csv(csv_file, index=False)
+
+    print(f"\nCSV file saved to: {csv_file}")
+
+    # Export to Excel
+    excel_file = output_folder / "dicom_metadata.xlsx"
+    df.to_excel(excel_file, index=False)
+
+    print(f"Excel file saved to: {excel_file}")
+
+if __name__ == "__main__":
+    main()
