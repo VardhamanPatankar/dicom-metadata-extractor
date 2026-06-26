@@ -88,10 +88,11 @@ pip install -r requirements.txt
 ```bash
 python main.py
 ```
-
 3. The extracted metadata will be saved inside the `output` folder as:
 - `dicom_metadata.csv`
 - `dicom_metadata.xlsx`
+
+Note: The sample CT_small.dcm file used during development is from the pydicom test dataset. You can replace it with any valid .dcm file to test the utility.
 
 ## Error Handling
 The utility includes the following error handling:
