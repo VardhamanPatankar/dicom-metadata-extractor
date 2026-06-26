@@ -1,14 +1,34 @@
+from pathlib import Path
+
 import pydicom
-from pydicom.data import get_testdata_file
 
-# Get sample DICOM file
-filename = get_testdata_file("CT_small.dcm")
 
-# Read the DICOM file
-dataset = pydicom.dcmread(filename)
+def extract_metadata(dataset):
+    """
+    Extract important metadata fields from a DICOM dataset.
+    """
 
-print("Patient Name :", dataset.PatientName)
-print("Patient ID   :", dataset.PatientID)
-print("Modality     :", dataset.Modality)
-print("Study Date   :", dataset.StudyDate)
-print("Manufacturer :", dataset.Manufacturer)
+    metadata = {
+        "Patient Name": getattr(dataset, "PatientName", "Not Available"),
+        "Patient ID": getattr(dataset, "PatientID", "Not Available"),
+        "Modality": getattr(dataset, "Modality", "Not Available"),
+        "Study Date": getattr(dataset, "StudyDate", "Not Available"),
+        "Manufacturer": getattr(dataset, "Manufacturer", "Not Available"),
+    }
+
+    return metadata
+
+
+# Path to input folder
+input_folder = Path("input")
+
+# Path to the DICOM file
+dicom_file = input_folder / "CT_small.dcm"
+
+# Read DICOM file
+dataset = pydicom.dcmread(dicom_file)
+
+# Extract metadata
+metadata = extract_metadata(dataset)
+
+print(metadata)
