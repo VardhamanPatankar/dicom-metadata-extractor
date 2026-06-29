@@ -3,6 +3,7 @@
 ## Project Overview
 This project is a Python-based utility that reads DICOM (Digital Imaging and Communications in Medicine) files, extracts important metadata fields, and exports the extracted information into both CSV and Excel formats.
 The utility is designed to process one or more DICOM files placed inside the `input` folder while handling missing metadata fields and file-reading errors gracefully.
+It has been tested using both the pydicom sample dataset and real anonymized CT DICOM files from the public LIDC-IDRI dataset.
 
 ## Features
 - Read one or multiple DICOM files from the `input` folder
@@ -114,6 +115,16 @@ Failed files     : 0
 CSV file saved to: output/dicom_metadata.csv
 Excel file saved to: output/dicom_metadata.xlsx
 ```
+
+## Validation
+The utility was validated using:
+1. **pydicom sample dataset**
+   - Used during initial development and testing.
+
+2. **LIDC-IDRI public CT dataset**
+   - Tested using real anonymized DICOM (.dcm) files from the Lung Image Database Consortium Image Collection (LIDC-IDRI).
+   - Successfully extracted metadata from all DICOM slices.
+   - Verified CSV and Excel export functionality using real-world medical imaging data.
 
 ## Future Enhancements
 Possible future improvements include:
